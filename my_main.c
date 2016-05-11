@@ -82,6 +82,13 @@
   jdyrlandweaver
   ====================*/
 void first_pass() {
+  int index = lastop;
+  int i;
+  for (i = 0; i < lastop; i++) {
+  case FRAMES:
+  case VARY:
+  case BASENAME:
+  }
 }
 
 /*======== struct vary_node ** second_pass()) ==========
