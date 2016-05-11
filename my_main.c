@@ -86,6 +86,9 @@ void first_pass() {
   int i;
   for (i = 0; i < lastop; i++) {
   case FRAMES:
+    if (num_frames == 0) {
+      
+    }
   case VARY:
   case BASENAME:
   }
