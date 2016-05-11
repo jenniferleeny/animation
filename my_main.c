@@ -85,15 +85,19 @@ void first_pass() {
   int index = lastop;
   int i;
   for (i = 0; i < lastop; i++) {
+    switch(op[i].opcode) {
   case FRAMES:
-    if (num_frames == 0) {
-      
+    if (op[i].op.frames.num_frames == 0) {
+      op[i].op.frames.num_frames = 10;//default value
     }
+    break;
   case VARY:
+    break;
   case BASENAME:
+    break;
   }
 }
-
+}
 /*======== struct vary_node ** second_pass()) ==========
   Inputs:   
   Returns: An array of vary_node linked lists
