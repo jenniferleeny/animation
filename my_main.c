@@ -150,13 +150,13 @@ struct vary_node ** second_pass() {
       for (j = start_frame; j <= end_frame; j++){
 	double curr_val = start_val + ((end_val - start_val) / (end_frame - start_frame)) * (j - start_frame);
 	struct vary_node * curr = knobs[j];
-	while( curr->next )
+	while( curr->next ) {
 	  curr = curr->next;
+	}
 	
 	curr->next = (struct vary_node *)malloc(sizeof(struct vary_node));
 	strcpy((curr->next)->name, op[i].op.vary.p->name);
 	(curr->next)->value = curr_val;
-	curr = curr->next;
       }
     }
       /*
@@ -180,7 +180,7 @@ struct vary_node ** second_pass() {
 	strcpy((curr->next)->name, op[i].op.set.p->name);
 	curr->next->value = op[i].op.set.val;
       }      
-      }
+    }
   }
   print_knobs();
   return knobs;
@@ -248,8 +248,8 @@ void my_main( int polygons ) {
   double step;
   double xval, yval, zval, knob_value;
   struct matrix *transform;
-  struct matrix *tmp;
-  struct stack *s;
+  struct matrix *tmp = new_matrix(4,1000);
+  struct stack *s = new_stack();
   screen t;
   color g;
 
