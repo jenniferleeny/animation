@@ -2,12 +2,8 @@ OBJECTS= symtab.o print_pcode.o matrix.o my_main.o display.o draw.o gmath.o stac
 CFLAGS= -g
 LDFLAGS= -lm
 CC= gcc
-FILE= test.mdl
 
 all: parser
-
-run: all
-	./mdl $(FILE)
 
 parser: lex.yy.c y.tab.c y.tab.h $(OBJECTS)
 	gcc -o mdl $(CFLAGS) lex.yy.c y.tab.c $(OBJECTS) $(LDFLAGS)
