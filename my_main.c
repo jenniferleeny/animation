@@ -135,28 +135,29 @@ void first_pass() {
 struct vary_node ** second_pass() {
   printf("This is second_pass()");
   int i,j;
+  int start_frame,end_frame;
+  double start_val,curr_val,inc;
+  struct vary_node * curr;
   
   struct vary_node ** knobs = (struct vary_node **)malloc(sizeof(struct vary_node *)*num_frames);
   for (i = 0; i < num_frames; i++) {
-    knobs[i] = (struct vary_node *)malloc(sizeof(struct vary_node*));
+    knobs[i] = 0;
   }
   for (i = 0; i < lastop; i++) {
     if (op[i].opcode == VARY) {
-      int start_frame = op[i].op.vary.start_frame;//frame_num=end_frame - start_frame
-      int end_frame = op[i].op.vary.end_frame;
-      double start_val = op[i].op.vary.start_val;
-      double end_val = op[i].op.vary.end_val;//inc = (end_val - start_val)/(end_frame - start_frame)
+      start_frame = op[i].op.vary.start_frame;//frame_num=end_frame - start_frame
+      end_frame = op[i].op.vary.end_frame;
+      start_val = op[i].op.vary.start_val;
+      curr_val = start_val;
+      inc = (op[i].op.vary.end_val - start_val)/(end_frame - start_frame);
       
       for (j = start_frame; j <= end_frame; j++){
-	double curr_val = start_val + ((end_val - start_val) / (end_frame - start_frame)) * (j - start_frame);
-	struct vary_node * curr = knobs[j];
-	while( curr->next ) {
-	  curr = curr->next;
-	}
-	
-	curr->next = (struct vary_node *)malloc(sizeof(struct vary_node));
-	strcpy((curr->next)->name, op[i].op.vary.p->name);
-	(curr->next)->value = curr_val;
+	curr = (struct vary_node *)malloc(sizeof(struct vary_node));
+	strcpy(curr->name, op[i].op.vary.p->name);
+	curr->value = curr_val;
+	curr->next = knobs[j];
+	knobs[j] = curr;
+	curr_val += inc;
       }
     }
       /*
@@ -170,7 +171,7 @@ struct vary_node ** second_pass() {
 	knobs[j] = new_node;
       }
       }*/
-    else if (op[i].opcode == SET) {
+    /*else if (op[i].opcode == SET) {
       for(j = 0; j < num_frames; j++) {
 	struct vary_node * curr = knobs[j];
 	while(curr->next){
@@ -180,7 +181,7 @@ struct vary_node ** second_pass() {
 	strcpy((curr->next)->name, op[i].op.set.p->name);
 	curr->next->value = op[i].op.set.val;
       }      
-    }
+      }*/
   }
   print_knobs();
   return knobs;
