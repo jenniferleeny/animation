@@ -82,21 +82,31 @@
   jdyrlandweaver
   ====================*/
 void first_pass() {
-  int index = lastop;
+  int f_present,
+    v_present,
+    bn_present;
   int i;
   for (i = 0; i < lastop; i++) {
     switch(op[i].opcode) {
-  case FRAMES:
-    if (op[i].op.frames.num_frames == 0) {
-      op[i].op.frames.num_frames = 10;//default value
+    case FRAMES:
+      num_frames = op[i].op.frames.num_frames;
+      f_present = 1;
+      break;
+    case VARY:
+      v_present = 1;
+      break;
+    case BASENAME:
+      strcpy(name, op[i].op.basename.p->name);
+      bn_present = 1;
+      break;
     }
-    break;
-  case VARY:
-    break;
-  case BASENAME:
-    break;
+  }   
+  if (v_present == 1 && f_present != 1)
+    exit(0);
+  if (f_present == 1 && bn_present != 1) {
+    strcpy(name, "DARKFLORAL");
+    printf("Because basename.p->name was not set to anything, name shall be set to default, DARKFLORALn");
   }
-}
 }
 /*======== struct vary_node ** second_pass()) ==========
   Inputs:   
@@ -121,6 +131,7 @@ void first_pass() {
   jdyrlandweaver
   ====================*/
 struct vary_node ** second_pass() {
+  
 }
 
 
