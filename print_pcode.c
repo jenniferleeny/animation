@@ -9,6 +9,7 @@
 void print_pcode()
 {
   int i;
+  printf("lastop: %d\n", lastop);
   for (i=0;i<lastop;i++)
     {
       printf("%d: ",i);

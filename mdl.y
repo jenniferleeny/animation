@@ -784,11 +784,11 @@ int main(int argc, char **argv)
 {
   int i;
   i = 1;
-  
+
   if (argc > 1)
     {
       yyin = fopen(argv[1],"r");
-      
+
       if ( argc == 3 && strncmp(argv[2], "-l", 2) == 0) {
 	printf("lines");
 	i = 0;
@@ -797,8 +797,8 @@ int main(int argc, char **argv)
     }
   
   yyparse();
-  //print_pcode();
+  print_pcode();
   my_main();
-
+  printf("hello!\n");
   return 0;    
 }

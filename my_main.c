@@ -82,9 +82,10 @@
   jdyrlandweaver
   ====================*/
 void first_pass() {
-  int f_present,
-    v_present,
-    bn_present;
+  printf("This is first_pass()");
+  int f_present = 0;
+  int v_present = 0;
+  int bn_present = 0;
   int i;
   for (i = 0; i < lastop; i++) {
     switch(op[i].opcode) {
@@ -108,6 +109,7 @@ void first_pass() {
     printf("Because basename.p->name was not set to anything, name shall be set to default, DARKFLORALn");
   }
 }
+
 /*======== struct vary_node ** second_pass()) ==========
   Inputs:   
   Returns: An array of vary_node linked lists
@@ -131,31 +133,43 @@ void first_pass() {
   jdyrlandweaver
   ====================*/
 struct vary_node ** second_pass() {
-  int i,j;
+  printf("This is second_pass()");
+   int i,j;
   int start_frame, end_frame, end_val;
   double start_val, curr_val;
   struct vary_node * curr;
-
-  struct vary_node ** knobs = (struct vary_node **)malloc(num_frames * sizeof(struct vary_node *));
+  
+  struct vary_node ** knobs = (struct vary_node **)malloc(sizeof(struct vary_node *)*num_frames);
   for (i = 0; i < num_frames; i++) {
-    knobs[i] = (struct vary_node *)malloc(sizeof(struct vary_node));
+    knobs[i] = 0;//(struct vary_node *)malloc(sizeof(struct vary_node*));
   }
   for (i = 0; i < lastop; i++) {
     if (op[i].opcode == VARY) {
-      start_frame = op[i].op.vary.start_frame;
+      start_frame = op[i].op.vary.start_frame;//frame_num=end_frame - start_frame
       end_frame = op[i].op.vary.end_frame;
       start_val = op[i].op.vary.start_val;
-      end_val = op[i].op.vary.end_val;
-      for (j = start_frame; j <= end_frame; j++){
+      end_val = op[i].op.vary.end_val;//inc = (end_val - start_val)/(end_frame - start_frame)
+      
+      /*for (j = start_frame; j <= end_frame; j++){
 	curr_val = start_val + ((end_val - start_val) / (end_frame - start_frame)) * (j - start_frame);
 	curr = knobs[j];
-	while( curr->next ){
+	while( curr->next )
 	  curr = curr->next;
-	}
+	
 	curr->next = (struct vary_node *)malloc(sizeof(struct vary_node));
 	strcpy((curr->next)->name, op[i].op.vary.p->name);
 	(curr->next)->value = curr_val;
 	curr = curr->next;
+      }
+      */
+      for (j = 0; j < lastop; j++) {
+	struct vary_node * new_node = (struct vary_node*)malloc(sizeof(struct vary_node));
+	if (j > op[i].op.vary.start_frame && j <= op[i].op.vary.end_frame)
+	  start_val += ((end_val - start_val) / (end_frame - start_frame));
+	new_node->value = start_val;
+	strcpy(new_node->name, op[i].op.vary.p->name);
+	new_node->next = knobs[j];
+	knobs[j] = new_node;
       }
     }
     else if (op[i].opcode == SET) {
@@ -170,9 +184,9 @@ struct vary_node ** second_pass() {
       }      
     }
   }
+  print_knobs();
   return knobs;
 }
-
 
 /*======== void print_knobs() ==========
 Inputs:   
@@ -230,7 +244,7 @@ void print_knobs() {
   05/17/12 09:41:35
   jdyrlandweaver
   ====================*/
-void my_main( int polygons ) {
+void my_main() {//int polygons
 
   int i, f, j;
   double step;
@@ -252,7 +266,6 @@ void my_main( int polygons ) {
   g.green = 255;
   g.blue = 255;
 
-    
     for (i=0;i<lastop;i++) {
   
       switch (op[i].opcode) {
