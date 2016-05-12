@@ -134,9 +134,7 @@ void first_pass() {
   ====================*/
 struct vary_node ** second_pass() {
   printf("This is second_pass()");
-   int i,j;
-  int start_frame, end_frame, end_val;
-  double start_val, curr_val;
+  int i,j;
   
   struct vary_node ** knobs = (struct vary_node **)malloc(sizeof(struct vary_node *)*num_frames);
   for (i = 0; i < num_frames; i++) {
@@ -144,13 +142,13 @@ struct vary_node ** second_pass() {
   }
   for (i = 0; i < lastop; i++) {
     if (op[i].opcode == VARY) {
-      start_frame = op[i].op.vary.start_frame;//frame_num=end_frame - start_frame
-      end_frame = op[i].op.vary.end_frame;
-      start_val = op[i].op.vary.start_val;
-      end_val = op[i].op.vary.end_val;//inc = (end_val - start_val)/(end_frame - start_frame)
+      int start_frame = op[i].op.vary.start_frame;//frame_num=end_frame - start_frame
+      int end_frame = op[i].op.vary.end_frame;
+      double start_val = op[i].op.vary.start_val;
+      int end_val = op[i].op.vary.end_val;//inc = (end_val - start_val)/(end_frame - start_frame)
       
       for (j = start_frame; j <= end_frame; j++){
-	curr_val = start_val + ((end_val - start_val) / (end_frame - start_frame)) * (j - start_frame);
+	double curr_val = start_val + ((end_val - start_val) / (end_frame - start_frame)) * (j - start_frame);
 	struct vary_node * curr = knobs[j];
 	while( curr->next )
 	  curr = curr->next;
