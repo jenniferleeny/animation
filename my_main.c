@@ -137,7 +137,6 @@ struct vary_node ** second_pass() {
    int i,j;
   int start_frame, end_frame, end_val;
   double start_val, curr_val;
-  struct vary_node * curr;
   
   struct vary_node ** knobs = (struct vary_node **)malloc(sizeof(struct vary_node *)*num_frames);
   for (i = 0; i < num_frames; i++) {
@@ -152,7 +151,7 @@ struct vary_node ** second_pass() {
       
       for (j = start_frame; j <= end_frame; j++){
 	curr_val = start_val + ((end_val - start_val) / (end_frame - start_frame)) * (j - start_frame);
-	curr = knobs[j];
+	struct vary_node * curr = knobs[j];
 	while( curr->next )
 	  curr = curr->next;
 	
@@ -175,7 +174,7 @@ struct vary_node ** second_pass() {
       }*/
     else if (op[i].opcode == SET) {
       for(j = 0; j < num_frames; j++) {
-	curr = knobs[j];
+	struct vary_node * curr = knobs[j];
 	while(curr->next){
 	  curr = curr->next;
 	}
