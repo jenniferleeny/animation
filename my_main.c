@@ -145,7 +145,7 @@ struct vary_node ** second_pass() {
       int start_frame = op[i].op.vary.start_frame;//frame_num=end_frame - start_frame
       int end_frame = op[i].op.vary.end_frame;
       double start_val = op[i].op.vary.start_val;
-      int end_val = op[i].op.vary.end_val;//inc = (end_val - start_val)/(end_frame - start_frame)
+      double end_val = op[i].op.vary.end_val;//inc = (end_val - start_val)/(end_frame - start_frame)
       
       for (j = start_frame; j <= end_frame; j++){
 	double curr_val = start_val + ((end_val - start_val) / (end_frame - start_frame)) * (j - start_frame);
