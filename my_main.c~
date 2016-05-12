@@ -14,7 +14,7 @@
 
   basename: set name (in misc_headers.h) for animation
 
-  vary: manipulate knob values between two given frames
+  vary: manipluate knob values between two given frames
         over a specified interval
 
   set: set a knob to a given value
@@ -113,7 +113,7 @@ void first_pass() {
   Returns: An array of vary_node linked lists
 
   In order to set the knobs for animation, we need to keep
-  a separate value for each knob for each frame. We can do
+  a seaprate value for each knob for each frame. We can do
   this by using an array of linked lists. Each array index
   will correspond to a frame (eg. knobs[0] would be the first
   frame, knobs[2] would be the 3rd frame and so on).
@@ -125,52 +125,13 @@ void first_pass() {
   Go through the opcode array, and when you find vary, go 
   from knobs[0] to knobs[frames-1] and add (or modify) the
   vary_node corresponding to the given knob with the
-  appropriate value. 
+  appropirate value. 
 
   05/17/12 09:29:31
   jdyrlandweaver
   ====================*/
 struct vary_node ** second_pass() {
-  int i,j;
-  int start_frame, end_frame, end_val;
-  double start_val, curr_val;
-  struct vary_node * curr;
-
-  struct vary_node ** knobs = (struct vary_node **)malloc(num_frames * sizeof(struct vary_node *));
-  for (i = 0; i < num_frames; i++) {
-    knobs[i] = (struct vary_node *)malloc(sizeof(struct vary_node));
-  }
-  for (i = 0; i < lastop; i++) {
-    if (op[i].opcode == VARY) {
-      start_frame = op[i].op.vary.start_frame;
-      end_frame = op[i].op.vary.end_frame;
-      start_val = op[i].op.vary.start_val;
-      end_val = op[i].op.vary.end_val;
-      for (j = start_frame; j <= end_frame; j++){
-	curr_val = start_val + ((end_val - start_val) / (end_frame - start_frame)) * (j - start_frame);
-	curr = knobs[j];
-	while( curr->next ){
-	  curr = curr->next;
-	}
-	curr->next = (struct vary_node *)malloc(sizeof(struct vary_node));
-	strcpy((curr->next)->name, op[i].op.vary.p->name);
-	(curr->next)->value = curr_val;
-	curr = curr->next;
-      }
-    }
-    else if (op[i].opcode == SET) {
-      for(j = 0; j < num_frames; j++) {
-	curr = knobs[j];
-	while(curr->next){
-	  curr = curr->next;
-	}
-	curr->next = (struct vary_node *)malloc(sizeof(struct vary_node));
-	strcpy((curr->next)->name, op[i].op.set.p->name);
-	curr->next->value = op[i].op.set.val;
-      }      
-    }
-  }
-  return knobs;
+  
 }
 
 
