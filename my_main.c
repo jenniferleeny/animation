@@ -82,7 +82,7 @@
   jdyrlandweaver
   ====================*/
 void first_pass() {
-  //  printf("This is first_pass()");
+  printf("This is first_pass()\n\n");
   int f_present = 0;
   int v_present = 0;
   int bn_present = 0;
@@ -133,7 +133,7 @@ void first_pass() {
   jdyrlandweaver
   ====================*/
 struct vary_node ** second_pass() {
-  //  printf("This is second_pass()");
+  printf("This is second_pass()\n\n");
   int i,j;
   int start_frame,end_frame;
   double start_val,curr_val,inc;
@@ -188,10 +188,11 @@ jdyrlandweaver
 void print_knobs() {
   
   int i;
-
+  printf("lastsym value: %d\n", lastsym);
+  printf("SYM_VALUE: %d\n", SYM_VALUE);
   printf( "ID\tNAME\t\tTYPE\t\tVALUE\n" );
   for ( i=0; i < lastsym; i++ ) {
-
+    
     if ( symtab[i].type == SYM_VALUE ) {
       printf( "%d\t%s\t\t", i, symtab[i].name );
 
@@ -238,9 +239,11 @@ void my_main( int polygons ) {
   double step;
   double xval, yval, zval, knob_value;
   struct matrix *transform;
-  struct matrix *tmp = new_matrix(4,1000);
-  struct stack *s = new_stack();
+  struct matrix *tmp;
+  //struct stack *s = new_stack();
   screen t;
+  clear_screen(t);
+  
   color g;
 
   struct vary_node **knobs;
@@ -257,14 +260,27 @@ void my_main( int polygons ) {
   first_pass();
   knobs = second_pass();
 
-  for (f = 0; f < num_frames; f++) {
+  /*  for (f = 0; f < num_frames; f++) {
     if (num_frames > 1) {
       vn = knobs[f];
-      while (vn){
+      while (vn->next){
 	set_value(lookup_symbol(vn->name), vn->value);
 	vn = vn->next;
       }
+      set_value(lookup_symbol(vn->name), vn->value);
+      }*/
+  for (f = 0; f < num_frames; f++) {
+    tmp = new_matrix(4,4); 
+    struct stack *s = new_stack();
+    if (num_frames != 1) {
+      vn = knobs[f];
+      while (vn->next){
+	set_value(lookup_symbol(vn->name), vn->value);
+	vn = vn->next;
+      }
+      set_value(lookup_symbol(vn->name), vn->value);
     }
+    printf("frame #%d\n", f);
     for (i=0;i<lastop;i++) {
       
       switch (op[i].opcode) {
@@ -375,7 +391,7 @@ void my_main( int polygons ) {
     }
   }
   
-  free_stack( s );
+  //free_stack( s );
   free_matrix( tmp );
-  //free_matrix( transform );
+  free_matrix( transform );
 }
