@@ -389,6 +389,11 @@ void my_main( int polygons ) {
 	break;
       }
     }
+    char name[50];
+    sprintf(name, "anim\%s\%00d.png", frame_name, i);
+    save_extension(t, name );
+    clear_screen(t);
+    free_stack(s);
   }
   
   //free_stack( s );
