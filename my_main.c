@@ -389,14 +389,10 @@ void my_main( int polygons ) {
 	break;
       }
     }
-    char name[50];
-    sprintf(name, "anim\%s\%00d.png", frame_name, i);
-    save_extension(t, name );
+    sprintf(frame_name, "./anim/darkfloral%03d.png", f);
+    save_extension(t, frame_name );
     clear_screen(t);
     free_stack(s);
+    free_matrix(tmp);
   }
-  
-  //free_stack( s );
-  free_matrix( tmp );
-  free_matrix( transform );
 }
