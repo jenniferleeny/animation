@@ -416,8 +416,8 @@ void my_main( int polygons ) {
 	break;
       }
     }
-    mkdir(name, 0664);
-    sprintf(frame_name, "./%s/darkfloral%03d.png", name, f);
+    mkdir(name, 0777);
+    sprintf(frame_name, "./%s/%s%03d.png", name, name, f);
     save_extension(t, frame_name );
     clear_screen(t);
     free_stack(s);
