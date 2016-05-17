@@ -345,9 +345,6 @@ void my_main( int polygons ) {
 	  yval *= vn->value;
 	  zval *= vn->value;
 	}
-	else{
-	  printf("vn doesn't exist\n");
-	}
 
 	transform = make_translate( xval, yval, zval );
 	//multiply by the existing origin
@@ -367,9 +364,6 @@ void my_main( int polygons ) {
 	  yval *= vn->value;
 	  zval *= vn->value;
 	}
-	else{
-	  printf("vn doesn't exist\n");
-	}
 
 	transform = make_scale( xval, yval, zval );
 	matrix_mult( s->data[ s->top ], transform );
@@ -383,9 +377,6 @@ void my_main( int polygons ) {
 	
 	if (vn){
           xval *= vn->value;
-	}
-	else{
-	  printf("vn doesn't exist\n");
 	}
 
 	//get the axis
