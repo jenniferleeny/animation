@@ -1,5 +1,8 @@
 mdl
-.*~
+*~
 *.o
 *.png
 *.gif
+y.tab.*
+lex.yy.c
+mdl.dSYM

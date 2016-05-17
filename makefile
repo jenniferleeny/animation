@@ -3,13 +3,14 @@ CFLAGS= -g
 LDFLAGS= -lm
 CC= gcc
 FILE= animtest.mdl
+NAME = darkfloral
 
 all: parser
 
 run: all
 	./mdl $(FILE)
-	convert darkfloral/darkfloral0* darkfloral.gif
-	animate -delay 10 darkfloral.gif
+	convert $(NAME)/$(NAME)0* $(NAME).gif
+	animate -delay 10 $(NAME).gif
 
 parser: lex.yy.c y.tab.c y.tab.h $(OBJECTS)
 	gcc -o mdl $(CFLAGS) lex.yy.c y.tab.c $(OBJECTS) $(LDFLAGS)
@@ -54,4 +55,4 @@ clean:
 	rm *.o *~
 
 clear_frames:
-	rm anim/*
+	rm $(NAME)/*

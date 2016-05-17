@@ -51,6 +51,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <sys/stat.h>
 #include "parser.h"
 #include "symtab.h"
 #include "y.tab.h"
@@ -240,7 +241,7 @@ void my_main( int polygons ) {
   double xval, yval, zval, knob_value;
   struct matrix *transform;
   struct matrix *tmp;
-  //struct stack *s = new_stack();
+  struct stack *s;
   screen t;
   clear_screen(t);
   
@@ -249,7 +250,6 @@ void my_main( int polygons ) {
   struct vary_node **knobs;
   struct vary_node *vn;
   char frame_name[128];
-  int jen;
 
   num_frames = 1;
   step = 5;
@@ -272,7 +272,7 @@ void my_main( int polygons ) {
       }*/
   for (f = 0; f < num_frames; f++) {
     tmp = new_matrix(4,4); 
-    struct stack *s = new_stack();
+    s = new_stack();
     if (num_frames != 1) {
       vn = knobs[f];
       while (vn->next){
@@ -345,9 +345,6 @@ void my_main( int polygons ) {
 	  yval *= vn->value;
 	  zval *= vn->value;
 	}
-	else{
-	  printf("vn doesn't exist\n");
-	}
 
 	transform = make_translate( xval, yval, zval );
 	//multiply by the existing origin
@@ -367,9 +364,6 @@ void my_main( int polygons ) {
 	  yval *= vn->value;
 	  zval *= vn->value;
 	}
-	else{
-	  printf("vn doesn't exist\n");
-	}
 
 	transform = make_scale( xval, yval, zval );
 	matrix_mult( s->data[ s->top ], transform );
@@ -383,9 +377,6 @@ void my_main( int polygons ) {
 	
 	if (vn){
           xval *= vn->value;
-	}
-	else{
-	  printf("vn doesn't exist\n");
 	}
 
 	//get the axis
